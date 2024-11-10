@@ -9,7 +9,8 @@
 | Shri Krishna | skris56 |
 | Sarah Yasin | syasi2 |
 
-![Requirement](./CS_480_Project_Requirements.png)
+![Requirement (page 1)](./CS%20480%20Project%20Requirements1.jpg)
+![Requirement (page 2)](./CS%20480%20Project%20Requirements2.jpg)
 
 ![ER](./Developer%20Survey%20-%20ER%20Diagram.png)
 
