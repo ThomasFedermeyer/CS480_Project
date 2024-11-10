@@ -2,7 +2,7 @@
 
 # Final Project
 
-| Team Memebrs | Email (@uic.ed) |
+| Team Members | Email (@uic.edu) |
 | ----------- | ----------- |
 | Thomas Federmeyer | tfede2 |
 | Mehul Mathur | mmath34 |
