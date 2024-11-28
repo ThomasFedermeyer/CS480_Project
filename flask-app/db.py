@@ -13,7 +13,7 @@ DB_TABLES = {
     'technology': 'Technology',
     'technology_use_case': 'Technology_UseCases',
     'tool': 'Tool',
-    'tool_primary_purpose': 'Tool_PrimaryPurpose',
+    'tool_primary_purpose': 'Tool_PrimaryPurposes',
     'resource': 'Resource',
     'company': 'Company',
     'user': 'User',

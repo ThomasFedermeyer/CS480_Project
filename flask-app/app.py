@@ -15,6 +15,9 @@ from admin.resource_teaches_technology import resource_teaches_technology_bp
 from admin.resource_uses_tool import resource_uses_tool_bp
 from admin.technology_dependency import technology_dependency_bp
 from admin.developer_position import developer_position_bp
+
+from developer_profile import developer_profile_bp
+from popular_technologies import popular_technologies_bp
 import pymysql
 
 app = Flask(__name__)
@@ -34,6 +37,11 @@ app.register_blueprint(resource_teaches_technology_bp, url_prefix='/api/admin/re
 app.register_blueprint(resource_uses_tool_bp, url_prefix='/api/admin/resource_uses_tool')
 app.register_blueprint(technology_dependency_bp, url_prefix='/api/admin/technology_dependency')
 app.register_blueprint(developer_position_bp, url_prefix='/api/admin/developer_positions')
+
+# developer profile
+app.register_blueprint(developer_profile_bp, url_prefix='/api/developer_profile')
+# popular technologies
+app.register_blueprint(popular_technologies_bp, url_prefix='/api/popular_technologies')
 
 
 app.config['MYSQL_HOST'] = DB_CONFIG['host']
