@@ -18,6 +18,7 @@ from admin.developer_position import developer_position_bp
 
 from developer_profile import developer_profile_bp
 from popular_technologies import popular_technologies_bp
+from employment import employment_bp
 import pymysql
 
 app = Flask(__name__)
@@ -42,6 +43,8 @@ app.register_blueprint(developer_position_bp, url_prefix='/api/admin/developer_p
 app.register_blueprint(developer_profile_bp, url_prefix='/api/developer_profile')
 # popular technologies
 app.register_blueprint(popular_technologies_bp, url_prefix='/api/popular_technologies')
+# employment
+app.register_blueprint(employment_bp, url_prefix='/api/employment')
 
 
 app.config['MYSQL_HOST'] = DB_CONFIG['host']
