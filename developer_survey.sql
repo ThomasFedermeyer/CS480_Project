@@ -213,7 +213,7 @@ CREATE TABLE `Project_Uses_Technology` (
 
 LOCK TABLES `Project_Uses_Technology` WRITE;
 /*!40000 ALTER TABLE `Project_Uses_Technology` DISABLE KEYS */;
-INSERT INTO `Project_Uses_Technology` VALUES (3,2),(3,3),(3,4);
+INSERT INTO `Project_Uses_Technology` VALUES (2,2),(3,2),(3,3),(3,4);
 /*!40000 ALTER TABLE `Project_Uses_Technology` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,7 +265,7 @@ CREATE TABLE `Resource_Teaches_Technology` (
 
 LOCK TABLES `Resource_Teaches_Technology` WRITE;
 /*!40000 ALTER TABLE `Resource_Teaches_Technology` DISABLE KEYS */;
-INSERT INTO `Resource_Teaches_Technology` VALUES (1,1),(1,2),(3,3),(1,4);
+INSERT INTO `Resource_Teaches_Technology` VALUES (1,1),(1,2),(3,2),(3,3),(1,4);
 /*!40000 ALTER TABLE `Resource_Teaches_Technology` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -494,4 +494,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-28  2:46:02
+-- Dump completed on 2024-11-28 20:35:32
