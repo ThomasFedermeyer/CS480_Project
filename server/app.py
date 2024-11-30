@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_cors import CORS
+
 from db import DB_CONFIG
 from admin.developer_type import developer_type_bp
 from admin.technology_type import technology_type_bp
@@ -45,6 +47,8 @@ app.register_blueprint(developer_profile_bp, url_prefix='/api/developer_profile'
 app.register_blueprint(popular_technologies_bp, url_prefix='/api/popular_technologies')
 # employment
 app.register_blueprint(employment_bp, url_prefix='/api/employment')
+
+CORS(app)
 
 
 app.config['MYSQL_HOST'] = DB_CONFIG['host']

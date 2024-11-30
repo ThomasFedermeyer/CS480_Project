@@ -5,7 +5,7 @@ function App() {
 
   useEffect(() => {
     fetch(
-      "http://127.0.0.1:8000/popular_technologies/getUsersAndDeveloperTypesPerTechnology?developerTypeName=Full-Stack Engineer"
+      "http://127.0.0.1:8000/api/popular_technologies/getUsersAndDeveloperTypesPerTechnology"
     )
       .then((response) => response.json())
       .then((data) => setData(data))
