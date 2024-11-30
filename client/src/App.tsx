@@ -1,13 +1,15 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import GenderAgeLevel from "./components/developer_profile/genderAgeLevel";
-import Home from "./components/Home";
-import DeveloperProfile from "./components/DeveloperProfile";
 import EducationLevel from "./components/developer_profile/educationLevel";
 import LocationStats from "./components/developer_profile/locationStats";
 import CodingYear from "./components/developer_profile/codingYear";
 import DeveloperTypes from "./components/developer_profile/developerTypes";
 import LearningResources from "./components/developer_profile/learningResources";
+import Employment from "./components/employment";
+import CompaniesAndProject from "./components/employment/companiesAndProject";
+import DeveloperProfile from "./components/developerProfile";
+import Home from "./components/home";
 
 function App() {
   return (
@@ -44,6 +46,12 @@ function App() {
           <Route
             path="/developer_profile/learning_resources"
             element={<LearningResources />}
+          />
+
+          <Route path="/employment" element={<Employment />} />
+          <Route
+            path="/employment/companies_projects"
+            element={<CompaniesAndProject />}
           />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>

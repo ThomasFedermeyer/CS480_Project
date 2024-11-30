@@ -48,7 +48,6 @@ const LearningResources: React.FC = () => {
 
   const hasAgeGroup = data?.data.some((item) => item.AgeGroup !== undefined);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const customTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -76,7 +75,6 @@ const LearningResources: React.FC = () => {
       });
     }
     return acc;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, [] as any[]);
 
   const resourceNames = Array.from(

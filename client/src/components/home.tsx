@@ -17,8 +17,16 @@ const Home: React.FC = () => {
         variant="contained"
         color="primary"
         onClick={() => handleNavigate("/developer_profile")}
+        sx={{ mr: 2 }}
       >
         Go to Developer Profile
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleNavigate("/employment")}
+      >
+        Go to Employment
       </Button>
     </Box>
   );
