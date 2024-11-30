@@ -49,20 +49,52 @@ const LearningResources: React.FC = () => {
   const hasAgeGroup = data?.data.some((item) => item.AgeGroup !== undefined);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customTooltip = (props: any) => {
-    const { active, payload, label } = props;
+  const customTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
-          <p className="label">{`${label} : ${payload[0].value}`}</p>
-          {hasAgeGroup && (
-            <p className="intro">{`Resource: ${payload[0].payload.ResourceName}`}</p>
-          )}
+          <p className="label">{`${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} className="intro">
+              {`${entry.name} : ${entry.value}`}
+            </p>
+          ))}
         </div>
       );
     }
     return null;
   };
+
+  const groupedData = data?.data.reduce((acc, item) => {
+    const existing = acc.find((i) => i.AgeGroup === item.AgeGroup);
+    if (existing) {
+      existing[`${item.ResourceName} (${item.ResourceType})`] = item.counts;
+    } else {
+      acc.push({
+        AgeGroup: item.AgeGroup,
+        [`${item.ResourceName} (${item.ResourceType})`]: item.counts,
+      });
+    }
+    return acc;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }, [] as any[]);
+
+  const resourceNames = Array.from(
+    new Set(
+      data?.data.map((item) => `${item.ResourceName} (${item.ResourceType})`)
+    )
+  );
+
+  const colors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#ff8042",
+    "#8dd1e1",
+    "#a4de6c",
+    "#d0ed57",
+    "#ffc658",
+  ];
 
   return (
     <Box sx={{ p: 2 }}>
@@ -113,11 +145,11 @@ const LearningResources: React.FC = () => {
       {!loading && !data && <div>No data available</div>}
       {!loading && data && (
         <BarChart
-          width={600}
-          height={300}
-          data={data.data}
+          width={800}
+          height={400}
+          data={groupedData}
           margin={{
-            top: 5,
+            top: 20,
             right: 30,
             left: 20,
             bottom: 5,
@@ -128,7 +160,14 @@ const LearningResources: React.FC = () => {
           <YAxis />
           <Tooltip content={customTooltip} />
           <Legend />
-          <Bar dataKey="counts" fill="#8884d8" />
+          {resourceNames.map((name, index) => (
+            <Bar
+              key={name}
+              dataKey={name}
+              stackId={hasAgeGroup ? "a" : undefined}
+              fill={colors[index % colors.length]}
+            />
+          ))}
         </BarChart>
       )}
     </Box>
