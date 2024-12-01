@@ -97,3 +97,79 @@ export type LearningResource = {
 };
 
 export type APILearningResourcesResponse = GenericAPIResponse<LearningResource>;
+
+export type APICompaniesResponse = GenericAPIResponse<
+  {
+    data: Array<{
+      country: string;
+      id: number;
+      industry: string;
+      name: string;
+      profit: number;
+      projects: Array<{
+        budget: number;
+        description: string;
+        duration: number;
+        id: number;
+        name: string;
+      }>;
+    }>;
+  } & {
+    total_pages: number;
+  }
+>;
+
+export type CompanyNameType =
+  | "CompanyName"
+  | "RemotePolicy"
+  | "WorkingTime"
+  | "DeveloperTypeName";
+
+export type APIRemotePolicyResponse = GenericAPIResponse<{
+  data: Array<
+    {
+      Location?: string;
+      RemotePolicy?: string;
+      CompanyName?: CompanyNameType;
+      WorkingTime?: string;
+      DeveloperTypeName?: string;
+    } & GenericCount
+  >;
+}>;
+
+export type APITechSalaryResponse = GenericAPIResponse<{
+  data: Array<{
+    AvgSalary: number;
+    TechName?: string;
+    DeveloperTypeName?: string;
+  }>;
+}>;
+
+export type APITechnologiesResponse = GenericAPIResponse<
+  {
+    data: Array<{
+      dateOfRelease: string;
+      id: number;
+      name: string;
+      type: string;
+      useCases: string;
+    }>;
+  } & {
+    total_pages: number;
+  }
+>;
+
+export type APIToolsResponse = GenericAPIResponse<
+  {
+    data: Array<{
+      dateOfRelease: string;
+      id: number;
+      name: string;
+      primaryPurposes: string;
+      sync: string;
+      type: string;
+    }>;
+  } & {
+    total_pages: number;
+  }
+>;

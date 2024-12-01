@@ -2,8 +2,13 @@ import {
   AgeGenderByLevelAPIResponse,
   APIAvgYearsCodingByDeveloperTypeResponse,
   APIAvgYearsCodingByLocationResponse,
+  APICompaniesResponse,
   APIEducationLevelAPIResponse,
   APILearningResourcesResponse,
+  APIRemotePolicyResponse,
+  APITechnologiesResponse,
+  APITechSalaryResponse,
+  APIToolsResponse,
   APIYearsCodingGroupResponse,
   CodingLevelType,
   DemographicsType,
@@ -135,6 +140,149 @@ export const getLearningResources = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: APILearningResourcesResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getCompaniesAndProjects = async (
+  page: number,
+  filter: string,
+  filterValue: string
+): Promise<APICompaniesResponse> => {
+  try {
+    let params = `page=${page}`;
+    if (filter && filterValue) {
+      params += `&${filter}=${filterValue}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/employment/getCompaniesAndProjects?${params}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APICompaniesResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getRemotePolicyByLocation = async (
+  distributionOf: string | null,
+  byLocation: boolean | null
+): Promise<APIRemotePolicyResponse> => {
+  try {
+    let params = "";
+    if (distributionOf) {
+      params += `distributionOf=${distributionOf}`;
+    }
+    if (byLocation) {
+      params += `${params ? "&" : ""}byLocation=${byLocation}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/employment/getEmploymentStatus${
+        params ? "?" + params : ""
+      }`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APIRemotePolicyResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getAverageSalary = async (
+  groupBy: "DeveloperTypeName" | "TechName" | null
+): Promise<APITechSalaryResponse> => {
+  try {
+    let params = "";
+    if (groupBy) {
+      params += `groupBy=${groupBy}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/employment/averageSalary${params ? "?" + params : ""}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APITechSalaryResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getTechnologies = async (
+  page: number,
+  filter: string | null,
+  filterValue: string | null,
+  sortOrder: string | null,
+  sortType: string | null
+): Promise<APITechnologiesResponse> => {
+  try {
+    let params = `page=${page}`;
+    if (filter && filterValue) {
+      params += `&${filter}=${filterValue}`;
+    }
+    if (sortOrder) {
+      params += `&sort=${sortOrder}`;
+    }
+    if (sortType) {
+      params += `&sortBy=${sortType}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/popular_technologies/getTechnologies?${params}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APITechnologiesResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getTools = async (
+  page: number,
+  filter: string | null,
+  filterValue: string | null,
+  sortOrder: string | null,
+  sortType: string | null
+): Promise<APIToolsResponse> => {
+  try {
+    let params = `page=${page}`;
+    if (filter && filterValue) {
+      params += `&${filter}=${filterValue}`;
+    }
+    if (sortOrder) {
+      params += `&sort=${sortOrder}`;
+    }
+    if (sortType) {
+      params += `&sortBy=${sortType}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/popular_technologies/getTools?${params}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APIToolsResponse = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);

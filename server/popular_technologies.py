@@ -177,7 +177,7 @@ def get_tools():
     toDate = request.args.get('toDate', default='', type=str)
 
     toolTypeQuery = 'AND Type = \'{}\''.format(toolType) if toolType else ''
-    syncQuery = 'AND Sync = \'{}\''.format(sync) if sync else ''
+    syncQuery = 'AND SyncCapability = \'{}\''.format(sync) if sync else ''
     fromDateQuery = 'AND DateOfRelease >= \'{}\''.format(fromDate) if fromDate else ''
     toDateQuery = 'AND DateOfRelease <= \'{}\''.format(toDate) if toDate else ''
 

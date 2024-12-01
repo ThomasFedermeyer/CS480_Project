@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid } from "@mui/material";
 
-const Employment: React.FC = () => {
+const PopularTechnologies: React.FC = () => {
   const navigate = useNavigate();
 
   const handleNavigate = (route: string) => {
@@ -27,23 +27,25 @@ const Employment: React.FC = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleNavigate("/employment/companies_projects")}
+              onClick={() =>
+                handleNavigate("/popular_technologies/technologies")
+              }
               fullWidth
             >
-              Go to Companies & Projects
+              Go to Technologies
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleNavigate("/employment/employment_status")}
+              onClick={() => handleNavigate("/popular_technologies/tools")}
               fullWidth
             >
-              Go to Employment Status
+              Go to Tools
             </Button>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <Button
               variant="contained"
               color="secondary"
@@ -52,11 +54,11 @@ const Employment: React.FC = () => {
             >
               Go to Average Salary
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </>
   );
 };
 
-export default Employment;
+export default PopularTechnologies;

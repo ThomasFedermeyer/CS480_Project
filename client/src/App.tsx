@@ -10,6 +10,11 @@ import Employment from "./components/employment";
 import CompaniesAndProject from "./components/employment/companiesAndProject";
 import DeveloperProfile from "./components/developerProfile";
 import Home from "./components/home";
+import GetEmploymentStatus from "./components/employment/getEmploymentStatus";
+import AverageSalary from "./components/employment/averageSalary";
+import PopularTechnologies from "./components/popular_technologies";
+import Technologies from "./components/popular_technologies/technologies";
+import Tools from "./components/popular_technologies/tools";
 
 function App() {
   return (
@@ -53,6 +58,27 @@ function App() {
             path="/employment/companies_projects"
             element={<CompaniesAndProject />}
           />
+          <Route
+            path="/employment/employment_status"
+            element={<GetEmploymentStatus />}
+          />
+          <Route
+            path="/employment/average_salary"
+            element={<AverageSalary />}
+          />
+          <Route
+            path="/popular_technologies"
+            element={<PopularTechnologies />}
+          />
+          <Route
+            path="/popular_technologies/technologies"
+            element={<Technologies />}
+          />
+          <Route
+            path="/popular_technologies/technologies"
+            element={<Technologies />}
+          />
+          <Route path="/popular_technologies/tools" element={<Tools />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </Box>
