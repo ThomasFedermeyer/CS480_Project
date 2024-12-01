@@ -45,16 +45,44 @@ const PopularTechnologies: React.FC = () => {
               Go to Tools
             </Button>
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleNavigate("/employment/average_salary")}
+              onClick={() =>
+                handleNavigate("/popular_technologies/resources_per_technology")
+              }
               fullWidth
             >
-              Go to Average Salary
+              Go to Resources Per Technology
             </Button>
-          </Grid> */}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() =>
+                handleNavigate("/popular_technologies/resources_per_tool")
+              }
+              fullWidth
+            >
+              Go to Resources Per Tool
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() =>
+                handleNavigate(
+                  "/popular_technologies/user_and_developer_per_technology"
+                )
+              }
+              fullWidth
+            >
+              Go to User and Developer Per Technology
+            </Button>
+          </Grid>
         </Grid>
       </Box>
     </>

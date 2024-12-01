@@ -173,3 +173,25 @@ export type APIToolsResponse = GenericAPIResponse<
     total_pages: number;
   }
 >;
+
+export type APITechResourcesResponse = GenericAPIResponse<{
+  data: Array<{
+    ResourceNames: string[];
+    TechName: string;
+  }>;
+}>;
+
+export type APIToolResourcesResponse = GenericAPIResponse<{
+  data: Array<{
+    ResourceNames: string[];
+    ToolName: string;
+  }>;
+}>;
+
+export type APITechCountResponse = GenericAPIResponse<{
+  data: Array<
+    {
+      TechName: string;
+    } & GenericCount
+  >;
+}>;

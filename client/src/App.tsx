@@ -15,6 +15,9 @@ import AverageSalary from "./components/employment/averageSalary";
 import PopularTechnologies from "./components/popular_technologies";
 import Technologies from "./components/popular_technologies/technologies";
 import Tools from "./components/popular_technologies/tools";
+import ResourcesPerTechnology from "./components/popular_technologies/resourcesPerTechnology";
+import ResourcesPerTool from "./components/popular_technologies/resourcesPerTool";
+import UserAndDeveloperPerTechnology from "./components/popular_technologies/userAndDeveloperPerTechnology";
 
 function App() {
   return (
@@ -79,6 +82,18 @@ function App() {
             element={<Technologies />}
           />
           <Route path="/popular_technologies/tools" element={<Tools />} />
+          <Route
+            path="/popular_technologies/resources_per_technology"
+            element={<ResourcesPerTechnology />}
+          />
+          <Route
+            path="/popular_technologies/resources_per_tool"
+            element={<ResourcesPerTool />}
+          />
+          <Route
+            path="/popular_technologies/user_and_developer_per_technology"
+            element={<UserAndDeveloperPerTechnology />}
+          />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </Box>

@@ -73,10 +73,10 @@ const Technologies: React.FC = () => {
       <Button
         variant="contained"
         color="secondary"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/popular_technologies")}
         sx={{ mb: 4 }}
       >
-        Back to Home
+        Back to Popular Technologies
       </Button>
       <Typography variant="h4" gutterBottom>
         Popular Technologies

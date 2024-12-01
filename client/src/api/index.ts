@@ -6,8 +6,11 @@ import {
   APIEducationLevelAPIResponse,
   APILearningResourcesResponse,
   APIRemotePolicyResponse,
+  APITechCountResponse,
   APITechnologiesResponse,
+  APITechResourcesResponse,
   APITechSalaryResponse,
+  APIToolResourcesResponse,
   APIToolsResponse,
   APIYearsCodingGroupResponse,
   CodingLevelType,
@@ -283,6 +286,65 @@ export const getTools = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: APIToolsResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const getResourcesPerTechnology =
+  async (): Promise<APITechResourcesResponse> => {
+    try {
+      const response = await fetch(
+        `${baseURL}/api/popular_technologies/getResourcesPerTechnology`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: APITechResourcesResponse = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+export const getResourcesPerTool =
+  async (): Promise<APIToolResourcesResponse> => {
+    try {
+      const response = await fetch(
+        `${baseURL}/api/popular_technologies/getResourcesPerTool`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: APIToolResourcesResponse = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+export const getUsersAndDeveloperTypesPerTechnology = async (
+  developerTypeName: string | null
+): Promise<APITechCountResponse> => {
+  try {
+    let params = "";
+    if (developerTypeName) {
+      params += `developerTypeName=${developerTypeName}`;
+    }
+
+    const response = await fetch(
+      `${baseURL}/api/popular_technologies/getUsersAndDeveloperTypesPerTechnology${
+        params ? "?" + params : ""
+      }`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: APITechCountResponse = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
