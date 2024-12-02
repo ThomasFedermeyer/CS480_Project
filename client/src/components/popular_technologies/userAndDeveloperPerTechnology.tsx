@@ -12,6 +12,7 @@ import {
 import { getUsersAndDeveloperTypesPerTechnology } from "../../api";
 import { APITechCountResponse } from "../../api/interfaces";
 import { useNavigate } from "react-router-dom";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const UserAndDeveloperPerTechnology: React.FC = () => {
   const [data, setData] = useState<APITechCountResponse | null>(null);
@@ -43,15 +44,41 @@ const UserAndDeveloperPerTechnology: React.FC = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [developerTypeName]);
 
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "10px",
+            border: "1px solid #ccc",
+            fontSize: "12px",
+          }}
+        >
+          <p className="label">{`${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} className="intro">
+              {`${entry.name === "counts" ? "Users:" : entry.name} : ${
+                entry.value
+              }`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Button
         variant="contained"
         color="secondary"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/popular_technologies")}
         sx={{ mb: 4 }}
       >
-        Back to Home
+        Back to Popular Technologies
       </Button>
       <Typography variant="h4" gutterBottom>
         Users and Developer Types Per Technology
@@ -66,8 +93,8 @@ const UserAndDeveloperPerTechnology: React.FC = () => {
       {loading && <Typography>Loading...</Typography>}
       {!loading && data && (
         <BarChart
-          width={800}
-          height={400}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 20,
@@ -77,10 +104,15 @@ const UserAndDeveloperPerTechnology: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="TechName" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <XAxis dataKey="TechName" tick={false} />
+          <YAxis
+            label={{
+              value: "Users",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip content={customTooltip} />
           <Bar dataKey="counts" fill="#8884d8" />
         </BarChart>
       )}

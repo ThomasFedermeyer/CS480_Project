@@ -13,6 +13,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { APIAvgYearsCodingByDeveloperTypeResponse } from "../../api/interfaces";
 import { getDeveloperTypesAndYearsCoding } from "../../api";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const DeveloperTypes: React.FC = () => {
   const [data, setData] =
@@ -36,24 +37,23 @@ const DeveloperTypes: React.FC = () => {
     fetchData();
   }, []);
 
-  const customLabel = (props: {
-    x: number;
-    y: number;
-    width: number;
-    value: number;
-    index: number;
-  }) => {
-    const { x, y, width, value, index } = props;
-    const count = data?.data[index].counts;
-    return (
-      <text
-        x={x + width / 2}
-        y={y}
-        fill="#000"
-        textAnchor="middle"
-        dy={-6}
-      >{`${value.toFixed(2)} (${count})`}</text>
-    );
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "10px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <p className="label">{`Developer Type: ${label}`}</p>
+          <p className="intro">{`Average Years Coding: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -73,8 +73,8 @@ const DeveloperTypes: React.FC = () => {
       {!loading && !data && <Typography>No data available</Typography>}
       {!loading && data && (
         <BarChart
-          width={800}
-          height={400}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 20,
@@ -84,13 +84,16 @@ const DeveloperTypes: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="DeveloperTypeName" />
-          <YAxis />
-          <Tooltip formatter={(value: number) => value.toFixed(2)} />
-          <Legend />
-          <Bar dataKey="AvgYearsCoding" fill="#8884d8" label={customLabel}>
-            <LabelList dataKey="counts" position="outside" />
-          </Bar>
+          <XAxis dataKey="DeveloperTypeName" tick={false} />
+          <YAxis
+            label={{
+              value: "Average Age of Coding",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip content={customTooltip} />
+          <Bar dataKey="AvgYearsCoding" fill="#8884d8"></Bar>
         </BarChart>
       )}
     </Box>

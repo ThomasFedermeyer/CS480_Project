@@ -12,6 +12,7 @@ import { APIEducationLevelAPIResponse } from "../../api/interfaces";
 import { getEducationLevel } from "../../api";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const EducationLevel: React.FC = () => {
   const [data, setData] = useState<APIEducationLevelAPIResponse | null>(null);
@@ -34,6 +35,18 @@ const EducationLevel: React.FC = () => {
     fetchData();
   }, []);
 
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`Education Level: ${label}`}</p>
+          <p className="intro">{`Number of People: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Button
@@ -44,13 +57,12 @@ const EducationLevel: React.FC = () => {
       >
         Back to Developer Profile
       </Button>
-
       {loading && <div>Loading...</div>}
       {!loading && !data && <div>No data available</div>}
       {!loading && data && (
         <BarChart
-          width={600}
-          height={300}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 5,
@@ -60,10 +72,15 @@ const EducationLevel: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="EducationLevel" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <XAxis dataKey="EducationLevel" tick={false} />
+          <YAxis
+            label={{
+              value: "Number of People",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip content={customTooltip} />
           <Bar dataKey="counts" fill="#8884d8" />
         </BarChart>
       )}

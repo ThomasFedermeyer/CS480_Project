@@ -11,8 +11,18 @@ const Home: React.FC = () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      <h1>Home Page</h1>
-      <p>Welcome to the Home page.</p>
+      <h1>Project Name: Developer Survey</h1>
+      <p>
+        Developed By:
+        <br />
+        Shri Krishna (<strong>skris56</strong>),
+        <br />
+        Mehul Mathur (<strong>mmath34</strong>),
+        <br />
+        Thomas Federmeyer (<strong>tfede2</strong>),
+        <br />
+        Sarah Yasin (<strong>syasi2</strong>)
+      </p>
       <Button
         variant="contained"
         color="primary"

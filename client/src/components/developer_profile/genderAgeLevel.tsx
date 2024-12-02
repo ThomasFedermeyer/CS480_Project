@@ -23,6 +23,7 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const GenderAgeLevel: React.FC = () => {
   const [data, setData] = useState<AgeGenderByLevelAPIResponse | null>(null);
@@ -49,6 +50,20 @@ const GenderAgeLevel: React.FC = () => {
   useEffect(() => {
     fetchData(demographic, codingLevel);
   }, [demographic, codingLevel]);
+
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`${
+            demographic === "Gender" ? "Gender" : "Age"
+          }: ${label}`}</p>
+          <p className="intro">{`Number of People: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Box sx={{ p: 2 }}>
@@ -88,13 +103,12 @@ const GenderAgeLevel: React.FC = () => {
           <MenuItem value="Professional">Professional</MenuItem>
         </Select>
       </FormControl>
-
       {loading && <div>Loading...</div>}
       {!loading && !data && <div>No data available</div>}
       {!loading && data && (
         <BarChart
-          width={600}
-          height={300}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 5,
@@ -104,10 +118,18 @@ const GenderAgeLevel: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={demographic === "Age" ? "AgeGroup" : "Gender"} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <XAxis
+            dataKey={demographic === "Gender" ? "Gender" : "AgeGroup"}
+            tick={false}
+          />
+          <YAxis
+            label={{
+              value: "Number of People",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip content={customTooltip} />
           <Bar dataKey="counts" fill="#8884d8" />
         </BarChart>
       )}

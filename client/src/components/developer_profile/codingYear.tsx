@@ -12,6 +12,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { APIYearsCodingGroupResponse } from "../../api/interfaces";
 import { getYearsCodingDistribution } from "../../api";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const CodingYear: React.FC = () => {
   const [data, setData] = useState<APIYearsCodingGroupResponse | null>(null);
@@ -34,6 +35,25 @@ const CodingYear: React.FC = () => {
     fetchData();
   }, []);
 
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "10px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <p className="label">{`Years Coding Group: ${label}`}</p>
+          <p className="intro">{`Years: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Button
@@ -51,8 +71,8 @@ const CodingYear: React.FC = () => {
       {!loading && !data && <Typography>No data available</Typography>}
       {!loading && data && (
         <BarChart
-          width={800}
-          height={400}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 20,
@@ -62,10 +82,15 @@ const CodingYear: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="YearsCodingGroup" />
-          <YAxis />
-          <Tooltip formatter={(value: number) => value.toFixed(2)} />
-          <Legend />
+          <XAxis dataKey="YearsCodingGroup" tick={false} />
+          <YAxis
+            label={{
+              value: "Years of Coding",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          <Tooltip content={customTooltip} />
           <Bar dataKey="counts" fill="#8884d8"></Bar>
         </BarChart>
       )}

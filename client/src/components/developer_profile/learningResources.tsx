@@ -19,6 +19,7 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const LearningResources: React.FC = () => {
   const [data, setData] = useState<APILearningResourcesResponse | null>(null);
@@ -48,22 +49,6 @@ const LearningResources: React.FC = () => {
 
   const hasAgeGroup = data?.data.some((item) => item.AgeGroup !== undefined);
 
-  const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip">
-          <p className="label">{`${label}`}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={`item-${index}`} className="intro">
-              {`${entry.name} : ${entry.value}`}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
   const groupedData = data?.data.reduce((acc, item) => {
     const existing = acc.find((i) => i.AgeGroup === item.AgeGroup);
     if (existing) {
@@ -83,16 +68,29 @@ const LearningResources: React.FC = () => {
     )
   );
 
-  const colors = [
-    "#8884d8",
-    "#82ca9d",
-    "#ffc658",
-    "#ff8042",
-    "#8dd1e1",
-    "#a4de6c",
-    "#d0ed57",
-    "#ffc658",
-  ];
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "10px",
+            border: "1px solid #ccc",
+            fontSize: "12px",
+          }}
+        >
+          <p className="label">{`${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} className="intro">
+              {`${entry.name} : ${entry.value}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Box sx={{ p: 2 }}>
@@ -143,8 +141,8 @@ const LearningResources: React.FC = () => {
       {!loading && !data && <div>No data available</div>}
       {!loading && data && (
         <BarChart
-          width={800}
-          height={400}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={groupedData}
           margin={{
             top: 20,
@@ -154,16 +152,17 @@ const LearningResources: React.FC = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={hasAgeGroup ? "AgeGroup" : "ResourceName"} />
-          <YAxis />
+          <XAxis dataKey="AgeGroup" tick={false} height={150} interval={0} />
+          <YAxis
+            label={{ value: "People Using", angle: -90, position: "insideLeft" }}
+          />
           <Tooltip content={customTooltip} />
-          <Legend />
-          {resourceNames.map((name, index) => (
+          {resourceNames.map((name) => (
             <Bar
               key={name}
               dataKey={name}
               stackId={hasAgeGroup ? "a" : undefined}
-              fill={colors[index % colors.length]}
+              fill="#8884d8"
             />
           ))}
         </BarChart>

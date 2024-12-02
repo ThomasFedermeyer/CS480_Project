@@ -20,6 +20,7 @@ import {
 import { getAverageSalary } from "../../api";
 import { APITechSalaryResponse } from "../../api/interfaces";
 import { useNavigate } from "react-router-dom";
+import { CHART_HEIGHT, CHART_WIDTH } from "../../utils/globals";
 
 const AverageSalary: React.FC = () => {
   const [data, setData] = useState<APITechSalaryResponse | null>(null);
@@ -46,6 +47,30 @@ const AverageSalary: React.FC = () => {
   useEffect(() => {
     fetchData(groupBy);
   }, [groupBy]);
+
+  const customTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#f5f5f5",
+            padding: "10px",
+            border: "1px solid #ccc",
+            fontSize: "12px",
+          }}
+        >
+          <p className="label">{`${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} className="intro">
+              {`${entry.name} : ${entry.value}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Box sx={{ p: 2 }}>
@@ -78,8 +103,8 @@ const AverageSalary: React.FC = () => {
       {!loading && !data && <Typography>No data available</Typography>}
       {!loading && data && (
         <BarChart
-          width={800}
-          height={400}
+          width={CHART_WIDTH}
+          height={CHART_HEIGHT}
           data={data.data}
           margin={{
             top: 20,
@@ -90,13 +115,19 @@ const AverageSalary: React.FC = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            dataKey={
-              groupBy === "DeveloperTypeName" ? "DeveloperTypeName" : "TechName"
-            }
+            dataKey={groupBy === "TechName" ? "TechName" : "DeveloperTypeName"}
+            tick={false}
           />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <YAxis
+            label={{
+              value: "Average Salary",
+              angle: -90,
+              position: "insideLeft",
+              dx: -20, // Adjust horizontal padding
+              dy: 10, // Adjust vertical padding
+            }}
+          />
+          <Tooltip content={customTooltip} />
           <Bar dataKey="AvgSalary" fill="#8884d8" />
         </BarChart>
       )}
