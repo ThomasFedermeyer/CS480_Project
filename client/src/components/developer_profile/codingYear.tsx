@@ -47,7 +47,7 @@ const CodingYear: React.FC = () => {
           }}
         >
           <p className="label">{`Years Coding Group: ${label}`}</p>
-          <p className="intro">{`Years: ${payload[0].value}`}</p>
+          <p className="intro">{`Number of Users: ${payload[0].value}`}</p>
         </div>
       );
     }

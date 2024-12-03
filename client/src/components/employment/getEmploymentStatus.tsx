@@ -64,6 +64,7 @@ const GetEmploymentStatus: React.FC = () => {
 
   const customTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      const location = payload[0].payload.Location;
       return (
         <div
           className="custom-tooltip"
@@ -75,6 +76,7 @@ const GetEmploymentStatus: React.FC = () => {
           }}
         >
           <p className="label">{`${label}`}</p>
+          {location && <p className="intro">{`Location: ${location}`}</p>}
           {payload.map((entry: any, index: number) => (
             <p key={`item-${index}`} className="intro">
               {`${entry.name === "counts" ? "People Working" : entry.name} : ${
