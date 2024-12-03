@@ -1,385 +1,322 @@
 import db
-from db import DB_TABLES
 import random
+from datetime import datetime, timedelta
 
-
-nouns = [
-    "apple","banana","cat","dog","elephant","frog","giraffe","horse","iguana","jaguar","kangaroo",
-    "lion","monkey","nightingale","octopus","penguin","quail","rabbit","snake","tiger","umbrella",
-    "violet","whale","x-ray","yak","zebra","mountain","river","ocean","forest","desert","city",
-    "town","village","house","car","bike","book","pen","pencil","paper","computer","phone","table"]
-
-adjectives = [
-    "happy","sad","angry","calm","excited","bored","hungry","thirsty","tired","awake","smart","silly",
-    "funny","serious","kind","cruel","brave","cowardly","honest","dishonest","loud","quiet","fast","slow",
-    "big","small","tall","short","old","young","good","bad","beautiful","ugly","clean","dirty","wet","dry",
-    "hot","cold","easy","difficult","possible","impossible","true","false","crazy", "extreme", "red", "blue"]
-
-names_Bases = [
-    "Alice","Bob","Charlie","David","Emily","Frank","Grace","Henry","Isabella","Jack","Karen",
-    "Liam","Mia","Noah","Olivia","Peter","Quinn","Riley","Sophia","Thomas"]
-
-industries = [
-    "Technology","Healthcare","Finance","Education","Retail","Manufacturing","Construction",
-    "Hospitality","Transportation","Energy","Media and Entertainment","Real Estate","Agriculture",
-    "Legal","Consulting","Telecommunications","Automotive","Aerospace","Biotechnology","Government"
+# Data for insertion
+countries = ["India", "United States", "Japan", "Germany", "Canada"]
+industries = ["Technology", "Finance", "Healthcare", "Education", "Retail"]
+tools = ["Git", "Bitbucket", "VS Code", "CLion", "PyCharm", "Jenkins", "Eclipse", "IntelliJ IDEA", "Sublime Text", "Atom",
+          "GitLab", "Trello", "JIRA", "Postman", "Slack", "Zoom",
+          "Visual Studio", "Notion", "Figma", "Tableau", "Xcode", "Android Studio"]
+tool_types = ["IDE", "Collab"]
+resources = [
+    ("Stack Overflow", "Community Platform"),
+    ("Khan Academy", "Course/Tutorial"),
+    ("YouTube", "Media and Content"),
+    ("Udemy", "Course/Tutorial"),
+    ("W3Schools", "Documentation")
+]
+developer_types = ["Frontend Developer", "Backend Developer", "Full Stack Developer", "Data Scientist"]
+remote_policies = ["Remote", "Hybrid", "Onsite"]
+working_times = ["FullTime", "PartTime"]
+education_levels = [
+    "Primary/elementary school", "Secondary school", "Bachelor''s degree", 
+    "Master''s degree", "Professional degree", "Something else"
+]
+coding_levels = ["Professional", "Learning", "Other"]
+genders = ["M", "F", "O"]
+project_descriptions = [
+    "AI-powered chatbot", "E-commerce website", 
+    "Mobile banking app", "Social media analytics tool",
+    "IoT Device Management System", "Healthcare Scheduling Platform"
+]
+technology_use_cases = [
+    "Data analysis", "Machine learning", "Web development", 
+    "Cybersecurity", "IoT applications"
 ]
 
-countries = [
-    "United States","Canada","Mexico","Brazil","Argentina","China",
-    "India","Japan","Russia","Australia","Germany","France","United Kingdom",
-    "Italy","Spain","South Korea","Indonesia","Turkey","Nigeria","Egypt"
+tool_primary_purposes = [
+    "Version Control", "Code Collaboration", "Code Editing", "Code Building", "Code Testing", "Code Deployment"
 ]
-resource_types = ['Documentation','Community Platform','Course/Tutorial','Practical','Media and Content']
 
-positions = [
-    "Software Engineer","Data Scientist","DevOps Engineer","Cybersecurity Analyst",
-    "Project Manager","Product Manager","Business Analyst"
+technology_types = ["Programming Language", "Framework", "Database"]
+
+# Meaningful names
+company_names = ["Google", "Microsoft", "Facebook", "Amazon", "Apple"]
+technology_names = [
+    "Python", "Java", "C++", "JavaScript", "React", "Angular", "Express", "MongoDB", "PostgreSQL",
+      "Docker", "Kubernetes", "Ruby on Rails", "Flask", "Django", "TensorFlow", "PyTorch",
+        "Redis", "GraphQL", "Elasticsearch", "Hadoop"
 ]
-EducationLevel =  ['Primary/elementary school','Secondary school','Bachelor''s degree','Master''s degree','Professional degree','Something else']
-level = ['Professional','Learning','Other']
-gender = ['M','F','O']
-WFH = ['Remote','Hybrid','Onsite']
-worktime = ['FullTime','PartTime']
 
-tool_Names = []
-resource_Names = []
-tool_Primary_Purposes = []
-company_names = []
-project_name = []
-tech_type_name = []
-tech_name = []
-names = []
+# Define possible roles for Assigned_To
+roles = ["Tester", "Backend Engineer", "Frontend Engineer", "Product Manager", "Junior Developer", "DevOps"]
 
+# Track used names
+used_company_names = set()
+used_tool_names = set()
+used_project_names = set()
 
-
-
-
-
-def init_vals():
-    for i in range(20):
-        noun1 = nouns[random.randint(0, len(nouns)-1)]
-        noun2 = nouns[random.randint(0, len(nouns)-1)]
-        tool_Names.append(noun1 + " " + noun2)
-    for i in range(20):
-        noun1 = nouns[random.randint(0, len(nouns)-1)]
-        noun2 = nouns[random.randint(0, len(nouns)-1)]
-        resource_Names.append(noun1 + " " + noun2)
-    for i in range(20):
-        adj = adjectives[random.randint(0, len(adjectives)-1)]
-        noun = nouns[random.randint(0, len(nouns)-1)]
-        tool_Primary_Purposes.append(noun + " " + adj)
-    for i in range(20):
-        lev = level[random.randint(0, len(level)-1)]
-        noun = nouns[random.randint(0, len(nouns)-1)]
-        company_names.append(lev + " " + noun)
-    for i in range(20):
-        ind = industries[random.randint(0, len(industries)-1)]
-        adj = adjectives[random.randint(0, len(adjectives)-1)]
-        tech_name.append(ind + " " + adj)
-    for i in range(20):
-        ind = industries[random.randint(0, len(industries)-1)]
-        project_name.append(ind + " " + str(random.randint(0, 100)))
-    for i in range(20):
-        ind = industries[random.randint(0, len(industries)-1)]
-        tech_type_name.append(ind + " " + str(random.randint(0, 100)))
-    for i in range(100):
-        base = names_Bases[random.randint(0, len(names_Bases)-1)]
-        names.append(base + " " + str(random.randint(0, 100)))
-        
-
+# Database connection and execution
 conn = db.get_db_connection()
-cur = conn.cursor() 
+cur = conn.cursor()
+
 def db_call(query):
     try:
         cur.execute(query)
-        cur.fetchall()
         conn.commit()
     except Exception as e:
-        print(query)
+        print("Query Failed:", query)
         print(e)
 
+# Helper functions
+def random_date(start_year=2000, end_year=2020):
+    start = datetime(year=start_year, month=1, day=1)
+    end = datetime(year=end_year, month=12, day=31)
+    delta = end - start
+    random_days = random.randint(0, delta.days)
+    return (start + timedelta(days=random_days)).strftime('%Y-%m-%d')
+
+def make_unique(name, used_names):
+    """Ensures the given name is unique by appending a number if needed."""
+    original_name = name
+    counter = 1
+    while name in used_names:
+        name = f"{original_name}_{counter}"
+        counter += 1
+    used_names.add(name)
+    return name
+
+def insert_tool():
+    for i, tool in enumerate(tools, start=1):
+        name = make_unique(tool, used_tool_names)
+        tool_type = random.choice(tool_types)
+        sync_capability = random.choice(["Y", "N"])
+        date_of_release = random_date()
+        query = f"""
+            INSERT INTO Tool (ToolID, Name, Type, SyncCapability, DateOfRelease)
+            VALUES ({i}, '{name}', '{tool_type}', '{sync_capability}', '{date_of_release}');
+        """
+        db_call(query)
+
+def insert_resources():
+    for i, (resource, resource_type) in enumerate(resources, start=1):
+        query = f"""
+            INSERT INTO Resource (ResourceID, Name, Type) 
+            VALUES ({i}, '{resource}', '{resource_type}');
+        """
+        db_call(query)
+
+def insert_tool_primary_purposes():
+    for tool_id in range(1, len(tools) + 1):
+        purpose = random.choice(tool_primary_purposes)
+        query = f"""
+            INSERT INTO Tool_PrimaryPurposes (ToolID, PrimaryPurpose)
+            VALUES ({tool_id}, '{purpose}');
+        """
+        db_call(query)
+
+def insert_companies():
+    for i, company in enumerate(company_names, start=1):
+        name = make_unique(company, used_company_names)
+        industry = random.choice(industries)
+        country = random.choice(countries)
+        gross_profit = random.randint(50000, 1000000)
+        query = f"""
+            INSERT INTO Company (CompanyID, Name, GrossProfit, Industry, Country)
+            VALUES ({i}, '{name}', {gross_profit}, '{industry}', '{country}');
+        """
+        db_call(query)
+
+def insert_projects():
+    for i in range(1, 11):
+        base_name = f"{random.choice(company_names)} {random.choice(project_descriptions)}"
+        name = make_unique(base_name, used_project_names)
+        company_id = random.randint(1, len(company_names))
+        description = random.choice(project_descriptions)
+        duration = random.randint(6, 24)
+        budget = random.randint(10000, 500000)
+        query = f"""
+            INSERT INTO Project (ProjectID, CompanyID, Name, Description, Duration, Budget)
+            VALUES ({i}, {company_id}, '{name}', '{description}', {duration}, {budget});
+        """
+        db_call(query)
+
+def insert_technology_types():
+    for i, tech_type in enumerate(technology_types, start=1):
+        description = f"This is a {tech_type}."
+        query = f"""
+            INSERT INTO TechnologyType (TypeID, Name, Description)
+            VALUES ({i}, '{tech_type}', '{description}');
+        """
+        db_call(query)
+
+def insert_technologies():
+    for i, name in enumerate(technology_names, start=1):
+        date_of_release = random_date()
+        type_id = random.randint(1, len(technology_types))
+        query = f"""
+            INSERT INTO Technology (TechID, Name, DateOfRelease, TypeID)
+            VALUES ({i}, '{name}', '{date_of_release}', {type_id});
+        """
+        db_call(query)
+
+def insert_technology_use_cases():
+    for tech_id in range(1, len(technology_names) + 1):
+        usecase = random.choice(technology_use_cases)
+        query = f"""
+            INSERT INTO Technology_UseCases (TechID, UseCase)
+            VALUES ({tech_id}, '{usecase}');
+        """
+        db_call(query)
+
+def insert_users():
+    for i in range(1, 21):
+        name = f"User {i}"
+        education_level = random.choice(education_levels)
+        coding_level = random.choice(coding_levels)
+        years_coding = random.randint(0, 20)
+        age = random.randint(18, 50)
+        gender = random.choice(genders)
+        location = random.choice(countries)
+        query = f"""
+            INSERT INTO User (UserID, Name, EducationLevel, CodingLevel, YearsCoding, Age, Gender, Location)
+            VALUES ({i}, '{name}', '{education_level}', '{coding_level}', {years_coding}, {age}, '{gender}', '{location}');
+        """
+        db_call(query)
+
+def insert_developer_types():
+    for i, dev_type in enumerate(developer_types, start=1):
+        popularity = random.randint(1, 10)
+        experience = random.randint(0, 10)
+        query = f"""
+            INSERT INTO DeveloperType (TypeID, Name, PopularityRating, RequiredExperience)
+            VALUES ({i}, '{dev_type}', {popularity}, {experience});
+        """
+        db_call(query)
+
+def insert_positions():
+    for i in range(1, 21):
+        developer_type_id = random.randint(1, len(developer_types))
+        company_id = random.randint(1, len(company_names))
+        remote_policy = random.choice(remote_policies)
+        salary = random.randint(50000, 200000)
+        working_time = random.choice(working_times)
+        query = f"""
+            INSERT INTO Position (DeveloperTypeID, UserID, CompanyID, RemotePolicy, Salary, WorkingTime)
+            VALUES ({developer_type_id}, {i}, {company_id}, '{remote_policy}', {salary}, '{working_time}');
+        """
+        db_call(query)
+
+def insert_technology_dependencies():
+    for _ in range(10):
+        dependent_tech_id = random.randint(1, len(technology_names))
+        supporting_tech_id = random.randint(1, len(technology_names))
+        if dependent_tech_id != supporting_tech_id:
+            query = f"""
+                INSERT INTO Technology_Dependency (DependentTechID, SupportingTechID)
+                VALUES ({dependent_tech_id}, {supporting_tech_id});
+            """
+            db_call(query)
+
+
+# Function to insert data into Assigned_To
+def insert_assigned_to():
+    for project_id in range(1, 11):  # Assuming 10 projects
+        user_count = random.randint(2, 5)  # Assign 2-5 users to each project
+        assigned_users = random.sample(range(1, 21), user_count)  # Randomly pick unique users (1 to 20)
+        for user_id in assigned_users:
+            role = random.choice(roles)
+            query = f"""
+                INSERT INTO Assigned_To (UserID, ProjectID, Role)
+                VALUES ({user_id}, {project_id}, '{role}');
+            """
+            db_call(query)
+
+# Function to insert data into Learns_From
+def insert_learns_from():
+    for user_id in range(1, 21):  # Assuming 20 users
+        resource_count = random.randint(2, 5)  # Each user learns from 2-5 resources
+        learned_resources = random.sample(range(1, 6), resource_count)  # Assuming 5 resources
+        for resource_id in learned_resources:
+            query = f"""
+                INSERT INTO Learns_From (UserID, ResourceID)
+                VALUES ({user_id}, {resource_id});
+            """
+            db_call(query)
+
+# Function to insert data into Project_Uses_Technology
+def insert_project_uses_technology():
+    for project_id in range(1, 11):  # Assuming 10 projects
+        tech_count = random.randint(2, 4)  # Each project uses 2-4 technologies
+        used_technologies = random.sample(range(1, 11), tech_count)  # Assuming 10 technologies
+        for tech_id in used_technologies:
+            query = f"""
+                INSERT INTO Project_Uses_Technology (ProjectID, TechID)
+                VALUES ({project_id}, {tech_id});
+            """
+            db_call(query)
+
+# Function to insert data into Resource_Teaches_Technology
+def insert_resource_teaches_technology():
+    for tech_id in range(1, len(technology_names)+1): 
+        resource_count = random.randint(1, 2)  # Each technology is taught by 1-2 resources
+        teaching_resources = random.sample(range(1, 6), resource_count)  # Assuming 5 resources
+        for resource_id in teaching_resources:
+            query = f"""
+                INSERT INTO Resource_Teaches_Technology (ResourceID, TechID)
+                VALUES ({resource_id}, {tech_id});
+            """
+            db_call(query)
+
+# Function to insert data into Resource_Uses_Tool
+def insert_resource_uses_tool():
+    for tool_id in range(1, len(tools)+1):
+        resource_count = random.randint(1, 2)  # Each tool is used by 1-2 resources
+        using_resources = random.sample(range(1, 6), resource_count)  # Assuming 5 resources
+        for resource_id in using_resources:
+            query = f"""
+                INSERT INTO Resource_Uses_Tool (ToolID, ResourceID)
+                VALUES ({tool_id}, {resource_id});
+            """
+            db_call(query)
+
+
+
+
+def delete_all_data():
+    """Deletes all data from all tables."""
+    tables = [
+        "Assigned_To", "Learns_From", "Project_Uses_Technology", "Resource_Teaches_Technology", "Resource_Uses_Tool",
+        "Technology_Dependency", "Position", "DeveloperType", "User",
+        "Technology", "TechnologyType", "Project", "Company", 
+        "Tool_PrimaryPurposes", "Tool", "Resource"
+    ]
+    for table in tables:
+        query = f"DELETE FROM {table};"
+        db_call(query)
+    print("All data deleted from all tables.")
+
+
+# Main Execution
 if __name__ == "__main__":
-    init_vals()
-    
-    for i in range (1, len(tool_Names)):
-        tool_type = 'IDE' if (random.randint(0,1) == 1) else 'Collab'
-        yn = 'Y' if (random.randint(0,1) == 1) else 'N'
-        query_string = """
-            INSERT INTO `Tool` VALUES ({}, '{}', '{}', '{}', '{}');
-            """.format(i, tool_Names[i], tool_type, yn, '2005-04-07')      
-        db_call(query_string)
-    for i in range (1, len(tool_Primary_Purposes)):
-        tool_id = random.randint(1, len(tool_Names) -1)
-        query_string = """
-            INSERT INTO `Tool_PrimaryPurposes` VALUES ({}, '{}');
-            """.format(tool_id, tool_Primary_Purposes[i])              
-        db_call(query_string)
-    for i in range (1, len(resource_Names)):
-        resource_type = random.randint(0, len(resource_types) -1)
-        query_string = """
-            INSERT INTO `Resource` VALUES ({}, '{}', '{}');
-            """.format(i, resource_Names[i], resource_types[resource_type])              
-        db_call(query_string)
-    for i in range (1, len(resource_Names)):
-        tool_id = random.randint(1, len(tool_Names) -1)
-        query_string = """
-            INSERT INTO `Resource_Uses_Tool` VALUES ({}, {});
-            """.format(tool_id, i)              
-        db_call(query_string)
-    for i in range (1, len(names)):
-        EducationLevel_ = random.randint(0, len(EducationLevel) -1)
-        level_ = random.randint(0, len(level) - 1)    
-        YearsCoding_ = random.randint(1, 30)
-        Age_ = random.randint(20, 65)
-        gender_ = random.randint(0, len(gender) - 1)   
+    # delete_all_data()
+    insert_tool()
+    insert_resources()
+    insert_tool_primary_purposes()
+    insert_companies()
+    insert_projects()
+    insert_technology_types()
+    insert_technologies()
+    insert_technology_use_cases()
+    insert_users()
+    insert_developer_types()
+    insert_positions()
+    insert_technology_dependencies()
 
-        query_string = """
-            INSERT INTO `User` VALUES ({}, '{}', '{}', '{}', {}, {}, '{}', '{}');
-            """.format(i, names[i], EducationLevel_, level[level_], YearsCoding_, Age_, gender[gender_], names[i])              
-        db_call(query_string)
-    for i in range (1, 10):
-        PopularityRating_ = random.randint(1, 10)
-        RequiredYears = random.randint(0, 10)   
-
-        query_string = """
-            INSERT INTO `DeveloperType` VALUES ({}, '{}', {}, {});
-            """.format(i, adjectives[i], EducationLevel_, PopularityRating_, RequiredYears)              
-        db_call(query_string)
-
-    for i in range (1, len(company_names)):
-        PopularityRating = random.randint(1, 100)
-        industry = industries[random.randint(0, len(industries) -1)]
-        country = countries[random.randint(0, len(countries) -1)]
-        query_string = """
-            INSERT INTO `Company` VALUES ({}, '{}', {}, '{}', '{}');
-            """.format(i, company_names[i], PopularityRating, industry, country)              
-        db_call(query_string)
-
-    for i in range (1, len(project_name)):
-        companyID = random.randint(1, len(company_names) -1)
-        PopularityRating = random.randint(1, 100)
-        desc = nouns[random.randint(0, len(nouns)-1)]
-        durration = random.randint(1, 40)
-        budget = random.randint(0, 99999)
-    
-        query_string = """
-            INSERT INTO `Project` VALUES ({}, {}, '{}', '{}', {}, {});
-            """.format(i, companyID, project_name[i], desc, durration, budget)              
-        db_call(query_string)
-
-    for i in range (1, len(tech_type_name)):
-        adj1 = adjectives[random.randint(0, len(adjectives)-1)]
-        adj2 = adjectives[random.randint(0, len(adjectives)-1)]
-        
-        query_string = """
-            INSERT INTO `TechnologyType` VALUES ({}, '{}', '{}');
-            """.format(i, tech_type_name[i], adj1 + " " + adj2)              
-        db_call(query_string)
-    for i in range (1, len(tech_name)):
-        adj1 = adjectives[random.randint(0, len(adjectives)-1)]
-        adj2 = adjectives[random.randint(0, len(adjectives)-1)]
-        techtype = random.randint(1, len(tech_type_name) -1)
-
-        query_string = """
-            INSERT INTO `Technology` VALUES ({}, '{}', '{}', {});
-            """.format(i, tech_name[i], '2001-01-01', techtype)              
-        db_call(query_string)
-    for i in range (1, 40):
-        techId = random.randint(1, len(tech_name) -1)
-        adj1 = adjectives[random.randint(0, len(adjectives)-1)]
-        adj2 = adjectives[random.randint(0, len(adjectives)-1)]
-
-        query_string = """
-            INSERT INTO `Technology_UseCases` VALUES ({}, '{}');
-            """.format(techId, adj1 + " " + adj2)              
-        db_call(query_string)
-    for i in range (1, 5):
-        techId1 = random.randint(1, len(tech_name) -1)
-        techId2 = techId1
-        while techId1 is not techId2:
-            techId2 = random.randint(1, len(tech_name) -1)
-
-        query_string = """
-            INSERT INTO `Technology_Dependency` VALUES ({}, '{}');
-            """.format(techId1, techId2)              
-        db_call(query_string)
-    for i in range (1, 5):
-        techId = random.randint(1, len(tech_name) - 1)
-        resourceID = random.randint(1, len(resource_Names) - 1)
-
-        query_string = """
-            INSERT INTO `Resource_Teaches_Technology` VALUES ({}, {});
-            """.format(resourceID, techId)              
-        db_call(query_string)
-
-    for i in range (50):
-        devtype = random.randint(1, 9)
-        userID = random.randint(1, len(names) -1)
-        companyID = random.randint(1, len(company_names) -1)
-        WFHPolicy = WFH[random.randint(0, len(WFH) -1)]
-        workTime_= worktime[random.randint(0, len(worktime) -1)]
-        salary = random.randint(0, 10_000_000)
-
-        query_string = """
-            INSERT INTO `Position` VALUES ({}, {}, {}, '{}', {}, '{}');
-            """.format(devtype, userID, companyID, WFHPolicy, salary, workTime_)              
-        db_call(query_string)
-    for i in range (1, 50):
-        projID = random.randint(1, len(project_name) - 1)
-        techId = random.randint(1, len(tech_name) - 1)
-
-        query_string = """
-            INSERT INTO `Project_Uses_Technology` VALUES ({}, {});
-            """.format(projID, techId)              
-        db_call(query_string)
-    for i in range (1, len(names)):
-        projID = random.randint(1, len(project_name) - 1)
-        adj = adjectives[random.randint(0, len(adjectives)-1)]
-
-        query_string = """
-            INSERT INTO `Assigned_To` VALUES ({}, {}, '{}');
-            """.format(i, techId, adj)              
-        db_call(query_string)
-    for i in range (1, 50):
-        userID = random.randint(1, len(names) - 1)
-        resourceID = random.randint(1, len(resource_Names) - 1)
-
-        query_string = """
-            INSERT INTO `learns_from` VALUES ({}, {});
-            """.format(userID, resourceID)              
-        db_call(query_string)
-        
-    
-
-
-
-# structire
-#     'developer_type': 'DeveloperType',
-#     'technology_type': 'TechnologyType',
-#     'technology': 'Technology',
-#     'technology_use_case': 'Technology_UseCases',
-#     'tool': 'Tool',
-#     'tool_primary_purpose': 'Tool_PrimaryPurposes',
-#     'resource': 'Resource',
-#     'company': 'Company',
-#     'user': 'User',
-#     'project': 'Project',
-#     'assigned_to': 'Assigned_To',
-#     'learns_from': 'Learns_From',
-#     'project_uses_technology': 'Project_Uses_Technology',
-#     'resource_teaches_technology': 'Resource_Teaches_Technology',
-#     'resource_uses_tool': 'Resource_Uses_Tool',
-#     'technology_dependency': 'Technology_Dependency',
-#     'position': 'Position'
-
-'''
-
-
-
------------------
-Add Tools 15
-Add Tool_PrimaryPurposes 16
-Add Resources 8
-Add Resource_Uses_Tool 10
------------------ THIS IS WHERE I AM
-Add User 17
-Add DeveloperType 3 
-Add Company 2
-Add Project 6
----------------- HERE
-Add TechnologyType 14
-Add Technology 11
-Add Technology_UseCases 13
-Add Technology_Dependency 12
-Add Resource_Teaches_Technology 9
-------------------
-Add Postion 5
-Add Project_Uses_Technology 7
-Add Assigned_To 1
-Add learns_from 4
-
-
-
-
-
-
-
-
-
-
-----------
-Tools ###
-Int
-string (noun+noun)
-'IDE','Collab'
-'Y','N'
-date
-----------
-Tool_PrimaryPurposes ###
-ToolID
-string (adj+noun)
-----------
-Resources ###
-Int
-String (noun+noun)
-'Documentation','Community Platform','Course/Tutorial','Practical','Media and Content'
-----------
-Resource_Uses_Tool ###
-toolId
-resource
-----------
-----------
-User ###
-int
-name
-`EducationLevel` enum('Primary/elementary school','Secondary school','Bachelor''s degree','Master''s degree','Professional degree','Something else'
-'Professional','Learning','Other'
-int 
-int 
-'M','F','O'
-string
------------
-DeveloperType ###
-int
-name
-int
-int
------------
-Company ###
-int
-name
-int
-sting
-string
------------
-Project ###
-int
-int (company)
-name
-description
-int
-int
--------
-Position ###
-int (DeveloperType)
-int (user)
-int (company)
-'Remote','Hybrid','Onsite'
-int salary
-'FullTime','PartTime'
--------
-Project_Uses_Technology ###
-int (project id)
-int (tech id)
---------
-Assigned_To ###
-int (user id
-int (project id)
-string (role)
--------
-learns_from ####
-int (user id)
-int (resource id)
-
-'''
+    insert_assigned_to()
+    insert_learns_from()
+    insert_project_uses_technology()
+    insert_resource_teaches_technology()
+    insert_resource_uses_tool()
+    print("Data Inserted Successfully!")

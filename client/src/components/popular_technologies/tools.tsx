@@ -124,7 +124,7 @@ const Tools: React.FC = () => {
             onChange={(e) => setSortType(e.target.value as string)}
           >
             <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="dateOfRelease">Date Of Release</MenuItem>
+            <MenuItem value="DateOfRelease">Date Of Release</MenuItem>
           </Select>
         </FormControl>
       )}
